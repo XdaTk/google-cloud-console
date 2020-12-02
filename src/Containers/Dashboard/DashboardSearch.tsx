@@ -3,8 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
 
 import { RootState } from 'Stores/reducers';
-import { setStatus as setSearchStatus } from './DashboardSearchSlice';
-
 import {
   makeStyles,
   alpha,
@@ -22,6 +20,8 @@ import {
   ClickAwayListener,
 } from 'Components/Material';
 import { ExpandMoreIcon, ClearIcon, SearchIcon, CloseIcon, ExpandLessIcon } from 'Components/Icons';
+
+import { setStatus as setSearchStatus } from './DashboardSearchSlice';
 
 const useStyles = makeStyles((theme) => ({
   container: {

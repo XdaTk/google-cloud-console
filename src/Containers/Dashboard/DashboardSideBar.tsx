@@ -17,7 +17,6 @@ import {
   ListItemText,
 } from 'Components/Material';
 import { MenuIcon, HomeIcon, ArrowRightIcon, ExpandMoreIcon, ExpandLessIcon } from 'Components/Icons';
-
 import { SideBarMenuEntry, SideBarMenuItemEntry } from 'Utils/Menu';
 
 const useStyles = makeStyles((theme) =>

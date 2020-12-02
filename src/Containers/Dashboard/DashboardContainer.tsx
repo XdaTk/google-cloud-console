@@ -1,9 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { makeStyles, useTheme, useMediaQuery, AppBar, ToolBar, Typography } from 'Components/Material';
-
 import { RootState } from 'Stores/reducers';
+import { makeStyles, useTheme, useMediaQuery, AppBar, ToolBar, Typography } from 'Components/Material';
 
 import DashboardAppSideBar from './DashboardSideBar';
 import DashboardSearch from './DashboardSearch';

@@ -1,8 +1,7 @@
-import { useState, SyntheticEvent, ChangeEvent } from 'react';
+import { useState, SyntheticEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from 'Stores/reducers';
-import { setStatus as setProjectStatus } from './DashboardProjectSlice';
 import {
   makeStyles,
   useTheme,
@@ -21,6 +20,8 @@ import {
   useMediaQuery,
 } from 'Components/Material';
 import { SearchIcon, SettingsIcon, ExpandMoreIcon } from 'Components/Icons';
+
+import { setStatus as setProjectStatus } from './DashboardProjectSlice';
 
 const useStyles = makeStyles((theme) => ({
   sidebar: {
