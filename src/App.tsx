@@ -1,11 +1,14 @@
 import { useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
 import { createMuiTheme, zhCN, useMediaQuery, ThemeProvider, CssBaseline } from 'Components/Material';
 import { LazyImport, LazyLoading } from 'Components/Screen';
 
 import { EmptyContainer } from 'Containers/Empty';
 import { DashboardContainer } from 'Containers/Dashboard';
+
+import Store from 'Stores';
 
 import 'Asserts/Styles/fonts.css';
 
@@ -26,22 +29,24 @@ function App() {
   );
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />·
-      <Router>
-        <Routes>
-          <Route element={<EmptyContainer />}>
-            <LazyLoading>
-              <Route element={<DashboardContainer />}>
-                <Route path="/" element={<Navigate to="home" />} />
-                <Route path="home/*" element={<LazyImport fileName="Screens/Home" />} />
-              </Route>
-            </LazyLoading>
-          </Route>
-          <Route path="*" element={<div>404</div>} />
-        </Routes>
-      </Router>
-    </ThemeProvider>
+    <Provider store={Store}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />·
+        <Router>
+          <Routes>
+            <Route element={<EmptyContainer />}>
+              <LazyLoading>
+                <Route element={<DashboardContainer />}>
+                  <Route path="/" element={<Navigate to="home" />} />
+                  <Route path="home/*" element={<LazyImport fileName="Screens/Home" />} />
+                </Route>
+              </LazyLoading>
+            </Route>
+            <Route path="*" element={<div>404</div>} />
+          </Routes>
+        </Router>
+      </ThemeProvider>
+    </Provider>
   );
 }
 
