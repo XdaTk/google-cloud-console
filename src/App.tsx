@@ -1,9 +1,9 @@
-import { useMemo } from 'react';
+import { lazy, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import { createMuiTheme, zhCN, useMediaQuery, ThemeProvider, CssBaseline } from 'Components/Material';
-import { LazyImport, LazyLoading } from 'Components/Screen';
+import { LazyLoading } from 'Components/Screen';
 
 import { EmptyContainer } from 'Containers/Empty';
 import { DashboardContainer } from 'Containers/Dashboard';
@@ -11,6 +11,8 @@ import { DashboardContainer } from 'Containers/Dashboard';
 import Store from 'Stores';
 
 import 'Asserts/Styles/fonts.css';
+
+const HomeScreen = lazy(() => import('Screens/Home'));
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -38,7 +40,7 @@ function App() {
               <LazyLoading>
                 <Route element={<DashboardContainer />}>
                   <Route path="/" element={<Navigate to="home" />} />
-                  <Route path="home/*" element={<LazyImport fileName="Screens/Home" />} />
+                  <Route path="home/*" element={<HomeScreen />} />
                 </Route>
               </LazyLoading>
             </Route>
