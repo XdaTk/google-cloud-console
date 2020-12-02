@@ -22,7 +22,6 @@ export { default as ClickAwayListener } from '@material-ui/core/ClickAwayListene
 export { default as Divider } from '@material-ui/core/Divider';
 export { default as ToolBar } from '@material-ui/core/Toolbar';
 export { default as Typography } from '@material-ui/core/Typography';
-export { default as Hidden } from '@material-ui/core/Hidden';
 export { default as Menu } from '@material-ui/core/Menu';
 export { default as MenuItem } from '@material-ui/core/MenuItem';
 export { default as Popover } from '@material-ui/core/Popover';

@@ -1,12 +1,13 @@
-import { useCallback, useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { makeStyles, useTheme, useMediaQuery, AppBar, ToolBar, Typography } from 'Components/Material';
 
-import { DashBoardSearchContext } from './DashboardContext';
+import { RootState } from 'Stores/reducers';
+
 import DashboardAppSideBar from './DashboardSideBar';
 import DashboardSearch from './DashboardSearch';
-import { DashboardSelectProject, DashboardSelectProjectModal } from './DashboardSelectProject';
+import { DashboardDesktopSelectProject, DashboardSelectProjectModal } from './DashboardSelectProject';
 import DashboardMenu from './DashboardMenu';
 
 export const useStyles = makeStyles((theme) => ({
@@ -33,57 +34,26 @@ function DashboardContainer() {
 
   const matches = useMediaQuery(theme.breakpoints.down('md'));
 
-  const [searchStatus, setSearchStatus] = useState(false);
-
-  const [searchSettingStatus, setSearchSettingStatus] = useState(false);
-
-  const [projectStatus, setProjectStatus] = useState(false);
-
-  const handleSearchStatus = useCallback(() => {
-    setSearchStatus((a) => !a);
-    if (!searchStatus) {
-      setSearchSettingStatus((a) => false);
-    }
-  }, []);
-
-  const handleSearchSettingStatus = useCallback(() => {
-    setSearchSettingStatus((a) => !a);
-    if (!searchStatus) {
-      setSearchStatus((a) => true);
-    }
-  }, []);
-
-  const handleProjectStatus = () => {
-    setProjectStatus(!projectStatus);
-  };
+  const searchStatus = useSelector((state: RootState) => state.ContainerDashboardSearchReducer.status);
 
   return (
     <div className={classes.root}>
       <AppBar position="fixed">
-        <DashBoardSearchContext.Provider
-          value={{
-            status: searchStatus,
-            handleStatus: handleSearchStatus,
-            settingStatus: searchSettingStatus,
-            handleSettingStatus: handleSearchSettingStatus,
-          }}
-        >
-          <ToolBar variant="dense" className={classes.toolbar}>
-            {matches && searchStatus && <DashboardSearch />}
-            {!(matches && searchStatus) && (
-              <>
-                <DashboardAppSideBar />
-                <Typography variant="h5">Tenon</Typography>
-                <DashboardSelectProject open={projectStatus} handle={handleProjectStatus} />
-                <div className={classes.grow} />
-                {!matches && <DashboardSearch />}
-                <div className={classes.grow} />
-                <DashboardMenu />
-              </>
-            )}
-            <DashboardSelectProjectModal open={projectStatus} handle={handleProjectStatus} />
-          </ToolBar>
-        </DashBoardSearchContext.Provider>
+        <ToolBar variant="dense" className={classes.toolbar}>
+          {matches && searchStatus !== 'close' && <DashboardSearch />}
+          {!(matches && searchStatus !== 'close') && (
+            <>
+              <DashboardAppSideBar />
+              <Typography variant="h5">Tenon</Typography>
+              {!matches && <DashboardDesktopSelectProject />}
+              <div className={classes.grow} />
+              {!matches && <DashboardSearch />}
+              <div className={classes.grow} />
+              <DashboardMenu />
+            </>
+          )}
+          <DashboardSelectProjectModal />
+        </ToolBar>
       </AppBar>
       <main className={classes.main}>
         <Outlet />

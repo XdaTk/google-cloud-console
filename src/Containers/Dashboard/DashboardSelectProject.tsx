@@ -1,5 +1,8 @@
 import { useState, SyntheticEvent, ChangeEvent } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
+import { RootState } from 'Stores/reducers';
+import { setStatus as setProjectStatus } from './DashboardProjectSlice';
 import {
   makeStyles,
   useTheme,
@@ -13,9 +16,9 @@ import {
   CardHeader,
   CardContent,
   CardActions,
-  Hidden,
   Button,
   IconButton,
+  useMediaQuery,
 } from 'Components/Material';
 import { SearchIcon, SettingsIcon, ExpandMoreIcon } from 'Components/Icons';
 
@@ -36,32 +39,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface DashboardSelectProjectModal {
-  open: boolean;
-  handle: () => void;
-}
-
-export function DashboardSelectProjectModal(props: DashboardSelectProjectModal) {
+export function DashboardSelectProjectModal() {
   const classes = useStyles();
 
   const theme = useTheme();
 
-  const { open, handle } = props;
+  const dispatch = useDispatch();
+
+  const projectStatus = useSelector((state: RootState) => state.ContainerDashboardProjectReducer.status);
 
   const [value, setValue] = useState(1);
-
-  const [search, setSearch] = useState('');
 
   const handleChange = (event: SyntheticEvent, value: any) => {
     setValue(value);
   };
 
-  const handleSearchValue = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setSearch(event.target.value);
+  const handleProjectModalClose = () => {
+    dispatch(setProjectStatus(false));
   };
 
   return (
-    <Modal keepMounted open={open} onClose={handle} className={classes.modal}>
+    <Modal keepMounted open={projectStatus} onClose={handleProjectModalClose} className={classes.modal}>
       <Card className={classes.cardRoot}>
         <CardHeader
           action={
@@ -81,9 +79,7 @@ export function DashboardSelectProjectModal(props: DashboardSelectProjectModal) 
             }}
           >
             <TextField
-              value={search}
               label="搜索项目和文件夹"
-              onChange={handleSearchValue}
               fullWidth
               size="small"
               InputProps={{
@@ -116,7 +112,7 @@ export function DashboardSelectProjectModal(props: DashboardSelectProjectModal) 
               marginLeft: 'auto',
             }}
           >
-            <Button color="inherit" onClick={handle}>
+            <Button color="inherit" onClick={handleProjectModalClose}>
               取消
             </Button>
             <Button disabled>打开</Button>
@@ -126,23 +122,19 @@ export function DashboardSelectProjectModal(props: DashboardSelectProjectModal) 
     </Modal>
   );
 }
-
-interface DashboardSelectProject {
-  open: boolean;
-  handle: () => void;
-}
-
-export function DashboardSelectProject(props: DashboardSelectProject) {
+export function DashboardDesktopSelectProject() {
   const classes = useStyles();
 
-  const { open, handle } = props;
+  const dispatch = useDispatch();
+
+  const handleProjectModalOpen = () => {
+    dispatch(setProjectStatus(true));
+  };
 
   return (
-    <Hidden mdDown>
-      <Button color="inherit" className={classes.sidebar} onClick={handle}>
-        选择项目
-        <ExpandMoreIcon />
-      </Button>
-    </Hidden>
+    <Button color="inherit" className={classes.sidebar} onClick={handleProjectModalOpen}>
+      选择项目
+      <ExpandMoreIcon />
+    </Button>
   );
 }

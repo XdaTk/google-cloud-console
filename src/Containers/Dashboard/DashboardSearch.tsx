@@ -1,5 +1,9 @@
-import { useContext } from 'react';
+import { MouseEvent } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
+
+import { RootState } from 'Stores/reducers';
+import { setStatus as setSearchStatus } from './DashboardSearchSlice';
 
 import {
   makeStyles,
@@ -19,8 +23,6 @@ import {
 } from 'Components/Material';
 import { ExpandMoreIcon, ClearIcon, SearchIcon, CloseIcon, ExpandLessIcon } from 'Components/Icons';
 
-import { DashBoardSearchContext } from './DashboardContext';
-
 const useStyles = makeStyles((theme) => ({
   container: {
     width: '40%',
@@ -31,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   collapseContainer: {
     width: '40%',
     [theme.breakpoints.down('md')]: {
-      width: '100%',
+      width: '40%',
     },
     position: 'absolute',
   },
@@ -56,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(${theme.spacing(6)})`,
+    paddingLeft: theme.spacing(6),
   },
   settingIcon: {
     position: 'relative',
@@ -79,10 +81,31 @@ const useStyles = makeStyles((theme) => ({
 export function DashboardSearchInput() {
   const classes = useStyles();
 
-  const { status, handleStatus, settingStatus, handleSettingStatus } = useContext(DashBoardSearchContext);
+  const dispatch = useDispatch();
+  const searchStatus = useSelector((state: RootState) => state.ContainerDashboardSearchReducer.status);
+
+  const handleSettingStatus = () => {
+    if (searchStatus === 'setting') {
+      dispatch(setSearchStatus('close'));
+    }
+
+    if (searchStatus === 'open') {
+      dispatch(setSearchStatus('setting'));
+    }
+
+    if (searchStatus === 'close') {
+      dispatch(setSearchStatus('setting'));
+    }
+  };
+
+  const handleFocusStatus = () => {
+    dispatch(setSearchStatus('open'));
+  };
+
+  const isSearchClose = searchStatus !== 'close';
 
   return (
-    <div className={clsx(classes.root, status && classes.rootSelected)}>
+    <div className={clsx(classes.root, isSearchClose && classes.rootSelected)}>
       <div className={classes.searchIcon}>
         <SearchIcon />
       </div>
@@ -90,22 +113,22 @@ export function DashboardSearchInput() {
         placeholder="搜索"
         type="text"
         fullWidth={true}
-        onFocus={handleStatus}
+        onFocus={handleFocusStatus}
         classes={{
-          input: clsx(classes.inputInput, status && classes.componentSelected),
+          input: clsx(classes.inputInput, isSearchClose && classes.componentSelected),
         }}
       />
       <div className={classes.settingIcon}>
-        <IconButton size="small" color="inherit" className={clsx(status && classes.componentSelected)}>
+        <IconButton size="small" color="inherit" className={clsx(isSearchClose && classes.componentSelected)}>
           <ClearIcon />
         </IconButton>
         <IconButton
           size="small"
           color="inherit"
-          className={clsx(status && classes.componentSelected)}
+          className={clsx(isSearchClose && classes.componentSelected)}
           onClick={handleSettingStatus}
         >
-          {settingStatus ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          {searchStatus === 'setting' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </IconButton>
       </div>
     </div>
@@ -115,10 +138,25 @@ export function DashboardSearchInput() {
 export function DashboardSearchCollapse() {
   const classes = useStyles();
 
-  const { settingStatus, handleSettingStatus } = useContext(DashBoardSearchContext);
+  const dispatch = useDispatch();
+  const searchStatus = useSelector((state: RootState) => state.ContainerDashboardSearchReducer.status);
+
+  const handleSettingStatus = () => {
+    if (searchStatus === 'setting') {
+      dispatch(setSearchStatus('close'));
+    }
+
+    if (searchStatus === 'open') {
+      dispatch(setSearchStatus('setting'));
+    }
+
+    if (searchStatus === 'close') {
+      dispatch(setSearchStatus('setting'));
+    }
+  };
 
   return (
-    <Collapse in={settingStatus} timeout="auto">
+    <Collapse in={searchStatus === 'setting'} timeout="auto">
       <div className={clsx(classes.collapseContainer)}>
         <Card>
           <CardHeader
@@ -156,21 +194,24 @@ export function DashboardSearchCollapse() {
 function DashboardSearch() {
   const classes = useStyles();
 
-  const { status, handleStatus } = useContext(DashBoardSearchContext);
+  const dispatch = useDispatch();
+  const searchStatus = useSelector((state: RootState) => state.ContainerDashboardSearchReducer.status);
 
-  const handleSearchClose = () => {
-    if (status) {
-      handleStatus!();
+  const handleSearchClose = (event: MouseEvent<Document>) => {
+    if (searchStatus !== 'close') {
+      dispatch(setSearchStatus('close'));
     }
   };
 
   return (
-    <ClickAwayListener onClickAway={handleSearchClose}>
-      <div className={classes.container}>
-        <DashboardSearchInput />
-        <DashboardSearchCollapse />
-      </div>
-    </ClickAwayListener>
+    <div className={classes.container}>
+      <ClickAwayListener onClickAway={handleSearchClose}>
+        <>
+          <DashboardSearchInput />
+          <DashboardSearchCollapse />
+        </>
+      </ClickAwayListener>
+    </div>
   );
 }
 

@@ -1,9 +1,21 @@
-import { useState, MouseEvent, useContext } from 'react';
+import { useState, MouseEvent } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { makeStyles, IconButton, Avatar, Badge, Menu, MenuItem, Hidden, Divider, Popover } from 'Components/Material';
+import { setStatus as setSearchStatus } from './DashboardSearchSlice';
+
+import {
+  makeStyles,
+  IconButton,
+  Avatar,
+  Badge,
+  Menu,
+  MenuItem,
+  Divider,
+  Popover,
+  useMediaQuery,
+  useTheme,
+} from 'Components/Material';
 import { HelpIcon, NotificationsIcon, MoreVertIcon, SearchIcon, OpenInNewIcon } from 'Components/Icons';
-
-import { DashBoardSearchContext } from './DashboardContext';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -15,7 +27,11 @@ const useStyles = makeStyles((theme) => ({
 function DashboardMenu() {
   const classes = useStyles();
 
-  const { handleStatus } = useContext(DashBoardSearchContext);
+  const dispatch = useDispatch();
+
+  const theme = useTheme();
+
+  const matches = useMediaQuery(theme.breakpoints.down('md'));
 
   const [helpAnchorEl, setHelpAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -55,6 +71,10 @@ function DashboardMenu() {
 
   const handleUserMenuClose = () => {
     setUserAnchorEl(null);
+  };
+
+  const handleSearchStatus = () => {
+    dispatch(setSearchStatus('open'));
   };
 
   const helpMenu = (
@@ -160,16 +180,16 @@ function DashboardMenu() {
 
   return (
     <>
-      <Hidden mdUp>
-        <IconButton color="inherit" onClick={handleStatus}>
+      {matches && (
+        <IconButton color="inherit" onClick={handleSearchStatus}>
           <SearchIcon className={classes.icon} />
         </IconButton>
-      </Hidden>
-      <Hidden mdDown>
+      )}
+      {!matches && (
         <IconButton color="inherit" onClick={handleHelpMenuClick}>
           <HelpIcon className={classes.icon} />
         </IconButton>
-      </Hidden>
+      )}
       <IconButton color="inherit" onClick={handleNotificationsMenuClick}>
         <Badge badgeContent={4} color="secondary">
           <NotificationsIcon className={classes.icon} />
@@ -178,12 +198,11 @@ function DashboardMenu() {
       <IconButton color="inherit" onClick={handleMoreMenuClick}>
         <MoreVertIcon className={classes.icon} />
       </IconButton>
-      <Hidden mdDown>
+      {!matches && (
         <IconButton size="small" color="inherit" onClick={handleUserMenuClick}>
           <Avatar alt="avatar" src={process.env.PUBLIC_URL + '/static/images/user/avatar.jpg'} />
         </IconButton>
-      </Hidden>
-
+      )}
       {helpMenu}
       {notificationsMenu}
       {moreMenu}
