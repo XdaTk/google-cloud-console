@@ -1,0 +1,13 @@
+export { default as HelpIcon } from '@material-ui/icons/HelpOutline';
+export { default as NotificationsIcon } from '@material-ui/icons/Notifications';
+export { default as MoreVertIcon } from '@material-ui/icons/MoreVert';
+export { default as SearchIcon } from '@material-ui/icons/Search';
+export { default as OpenInNewIcon } from '@material-ui/icons/OpenInNew';
+export { default as ClearIcon } from '@material-ui/icons/Clear';
+export { default as CloseIcon } from '@material-ui/icons/Close';
+export { default as ExpandLessIcon } from '@material-ui/icons/ExpandLess';
+export { default as ExpandMoreIcon } from '@material-ui/icons/ExpandMore';
+export { default as SettingsIcon } from '@material-ui/icons/Settings';
+export { default as ArrowRightIcon } from '@material-ui/icons/ArrowRight';
+export { default as HomeIcon } from '@material-ui/icons/Home';
+export { default as MenuIcon } from '@material-ui/icons/Menu';

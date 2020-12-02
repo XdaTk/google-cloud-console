@@ -1,0 +1,40 @@
+{
+  "name": "tenon",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.1.1",
+    "@emotion/styled": "^11.0.0",
+    "@material-ui/core": "^5.0.0-alpha.17",
+    "@material-ui/icons": "^5.0.0-alpha.15",
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.2.2",
+    "@testing-library/user-event": "^12.2.2",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.19.7",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
+    "eslint": "^7.14.0",
+    "eslint-config-alloy": "^3.8.2",
+    "eslint-plugin-react": "^7.21.5",
+    "fontsource-material-icons": "^3.0.2",
+    "fontsource-roboto": "^3.0.3",
+    "history": "^5.0.0",
+    "prettier": "^2.2.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^6.0.0-beta.0",
+    "react-scripts": "4.0.1",
+    "source-map-explorer": "^2.5.1",
+    "typescript": "^4.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "eject": "react-scripts eject"
+  }
+}
